@@ -35,13 +35,13 @@
             <name>Local Repository</name>
             <url>file://${project.basedir}/../repo</url>
         </repository>
-        <repository>
-            <id>4thline-repo</id>
-            <url>http://4thline.org/m2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
+<!--        <repository>-->
+<!--            <id>4thline-repo</id>-->
+<!--            <url>http://4thline.org/m2</url>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
     </repositories>
 
     <pluginRepositories>
