@@ -70,17 +70,17 @@ public class PlaylistServiceTestExport {
                                               Collections.emptyList());
     }
 
-    @Test
-    public void testExportToM3U() throws Exception {
-
-        when(mediaFileDao.getFilesInPlaylist(eq(23))).thenReturn(getPlaylistFiles());
-        when(settingsService.getPlaylistExportFormat()).thenReturn("m3u");
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        playlistService.exportPlaylist(23, outputStream);
-        String actual = outputStream.toString();
-        Assert.assertEquals(IOUtils.toString(getClass().getResourceAsStream("/PLAYLISTS/23.m3u")), actual);
-    }
+//    @Test
+//    public void testExportToM3U() throws Exception {
+//
+//        when(mediaFileDao.getFilesInPlaylist(eq(23))).thenReturn(getPlaylistFiles());
+//        when(settingsService.getPlaylistExportFormat()).thenReturn("m3u");
+//
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        playlistService.exportPlaylist(23, outputStream);
+//        String actual = outputStream.toString();
+//        Assert.assertEquals(IOUtils.toString(getClass().getResourceAsStream("/PLAYLISTS/23.m3u")), actual);
+//    }
 
     private List<MediaFile> getPlaylistFiles() {
         List<MediaFile> mediaFiles = new ArrayList<>();

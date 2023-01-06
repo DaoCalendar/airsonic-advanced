@@ -34,7 +34,7 @@
                             <goal>build</goal>
                         </goals>
                         <configuration>
-                            <showLogs>true</showLogs>
+<!--                            <showLogs>true</showLogs>-->
                             <images>
                                 <image>
                                     <name>${docker.container.repo}</name>

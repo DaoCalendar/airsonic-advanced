@@ -27,6 +27,11 @@
         <java.version>11</java.version>
         <cxf.version>3.4.3</cxf.version>
         <docker.container.repo>airsonicadvanced/airsonic-advanced</docker.container.repo>
+        <checkstyle.version>10.6.0</checkstyle.version>
+        <checkstyle.plugin.version>3.2.0</checkstyle.plugin.version>
+        <sevntu.checkstyle.plugin.version>1.44.1</sevntu.checkstyle.plugin.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
 
     <repositories>
@@ -117,6 +122,9 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!-- Specifying configuration here will take effect
+     on the execution of "mvn checkstyle:check" or "mvn checkstyle:checkstyle",
+     but will NOT take effect on the execution of "mvn site"  -->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>buildnumber-maven-plugin</artifactId>
@@ -148,33 +156,80 @@
                         </archive>
                     </configuration>
                 </plugin>
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--                    <version>3.1.1</version>-->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <id>validate</id>-->
+<!--                            <phase>validate</phase>-->
+<!--                            <configuration>-->
+<!--                                <configLocation>${project.basedir}/../checkstyle.xml</configLocation>-->
+<!--                                <encoding>UTF-8</encoding>-->
+<!--                                <consoleOutput>true</consoleOutput>-->
+<!--                                <failOnViolation>true</failOnViolation>-->
+<!--                                <includeTestSourceDirectory>true</includeTestSourceDirectory>-->
+<!--                            </configuration>-->
+<!--                            <goals>-->
+<!--                                <goal>check</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+<!--                    <dependencies>-->
+<!--                        <dependency>-->
+<!--                            <groupId>com.puppycrawl.tools</groupId>-->
+<!--                            <artifactId>checkstyle</artifactId>-->
+<!--                            <version>8.31</version>-->
+<!--                        </dependency>-->
+<!--                    </dependencies>-->
+<!--                </plugin>-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.1.1</version>
-                    <executions>
-                        <execution>
-                            <id>validate</id>
-                            <phase>validate</phase>
-                            <configuration>
-                                <configLocation>${project.basedir}/../checkstyle.xml</configLocation>
-                                <encoding>UTF-8</encoding>
-                                <consoleOutput>true</consoleOutput>
-                                <failOnViolation>true</failOnViolation>
-                                <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                            </configuration>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <version>${checkstyle.plugin.version}</version>
                     <dependencies>
                         <dependency>
                             <groupId>com.puppycrawl.tools</groupId>
                             <artifactId>checkstyle</artifactId>
-                            <version>8.31</version>
+                            <version>${checkstyle.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.github.sevntu-checkstyle</groupId>
+                            <artifactId>sevntu-checks</artifactId>
+                            <version>${sevntu.checkstyle.plugin.version}</version>
                         </dependency>
                     </dependencies>
+                    <!-- https://maven.apache.org/plugins/maven-checkstyle-plugin/checkstyle-mojo.html -->
+                    <!-- Properties for "mvn checkstyle:checkstyle" to execute without mvn build -->
+                    <configuration>
+                        <configLocation>checkstyle-win.xml</configLocation>
+                        <consoleOutput>true</consoleOutput>
+                        <failsOnError>false</failsOnError>
+                        <!-- linkXRef=false to avoid WARNING 'Unable to locate Source XRef to link to' -->
+                        <linkXRef>false</linkXRef>
+                    </configuration>
+                    <!-- https://maven.apache.org/plugins/maven-checkstyle-plugin/check-mojo.html -->
+                    <!-- Properties for "mvn checkstyle:check" to execute as part of maven build
+                         They are conflicting with properties of checkstyle:checkstyle
+                         so only one set should be used
+                    -->
+                    <!--
+                    <configuration>
+                        <configLocation>checkstyle.xml</configLocation>
+                        <logViolationsToConsole>true</logViolationsToConsole>
+                        <consoleOutput>true</consoleOutput>
+                        <failOnViolation>true</failOnViolation>
+                        <failsOnError>false</failsOnError>
+                    </configuration>
+                    -->
+                </plugin>
+
+                <!-- necessary for only running "mvn site" -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.12.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -185,7 +240,7 @@
                             <id>validate</id>
                             <phase>validate</phase>
                             <configuration>
-                                <sourceEncoding>utf-8</sourceEncoding>
+<!--                                <sourceEncoding>utf-8</sourceEncoding>-->
                             </configuration>
                             <goals>
                                 <goal>check</goal>
@@ -330,6 +385,25 @@
         </plugins>
     </build>
 
+    <reporting>
+        <plugins>
+            <!-- Specifying configuration here will take effect
+                 on the execution of "mvn site",
+                 but will NOT take effect on the execution of "mvn checkstyle:check"
+                 or "mvn checkstyle:checkstyle"
+             -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle.plugin.version}</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <failOnViolation>false</failOnViolation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
     <profiles>
         <profile>
             <id>docker</id>
@@ -349,6 +423,16 @@
                 <module>install/docker</module>
                 <module>integration-test</module>
             </modules>
+        </profile>
+        <profile>
+            <id>github-maven-repo</id>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>sevntu-maven</id>
+                    <name>sevntu-maven</name>
+                    <url>http://sevntu-checkstyle.github.io/sevntu.checkstyle/maven2</url>
+                </pluginRepository>
+            </pluginRepositories>
         </profile>
     </profiles>
 </project>

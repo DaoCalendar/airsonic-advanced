@@ -324,27 +324,28 @@
         </dependency>
 
         <!-- UPNP / DLNA -->
-<!--        <dependency>-->
-<!--            <groupId>org.fourthline.cling</groupId>-->
-<!--            <artifactId>cling-core</artifactId>-->
-<!--            &lt;!&ndash; Cling removed the org.fourthline.cling.transport.impl.apache package in 2.1, which is needed to make Cling work with Tomcat. &ndash;&gt;-->
-<!--            &lt;!&ndash; Don't upgrade this unless you can test UPnP/DLNA support properly! &ndash;&gt;-->
-<!--            <version>2.0.1</version>-->
-<!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.fourthline.cling</groupId>-->
-<!--            <artifactId>cling-support</artifactId>-->
-<!--            &lt;!&ndash; Cling removed the org.fourthline.cling.transport.impl.apache package in 2.1, which is needed to make Cling work with Tomcat. &ndash;&gt;-->
-<!--            &lt;!&ndash; Don't upgrade this unless you can test UPnP/DLNA support properly! &ndash;&gt;-->
-<!--            <version>2.0.1</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.fourthline.cling</groupId>
+            <artifactId>cling-core</artifactId>
+            <!-- Cling removed the org.fourthline.cling.transport.impl.apache package in 2.1, which is needed to make Cling work with Tomcat. -->
+            <!-- Don't upgrade this unless you can test UPnP/DLNA support properly! -->
+            <version>2.0.1</version>
+        </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.seamless</groupId>-->
-<!--            <artifactId>seamless-util</artifactId>-->
-<!--            <version>1.1.0</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.fourthline.cling</groupId>
+            <artifactId>cling-support</artifactId>
+            <!-- Cling removed the org.fourthline.cling.transport.impl.apache package in 2.1, which is needed to make Cling work with Tomcat. -->
+            <!-- Don't upgrade this unless you can test UPnP/DLNA support properly! -->
+            <version>2.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seamless</groupId>
+            <artifactId>seamless-util</artifactId>
+            <version>1.1.0</version>
+        </dependency>
 
         <dependency>
             <groupId>de.u-mass</groupId>
@@ -565,6 +566,11 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-core</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+            <version>1.9.5</version>
         </dependency>
     </dependencies>
 
